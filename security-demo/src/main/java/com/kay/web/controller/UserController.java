@@ -3,10 +3,7 @@ package com.kay.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kay.entity.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,4 +41,21 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PostMapping
+    public ResponseEntity<User> create(@RequestBody User user) {
+        user.setId("1");
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id:\\d+}")
+    public ResponseEntity<User> update(@PathVariable String id, @RequestBody User user) {
+        user.setUsername("update_name");
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/{id:\\d+}")
+    public ResponseEntity delete(@PathVariable String id) {
+        System.out.println("delete user id " + id);
+        return ResponseEntity.ok().build();
+    }
 }
