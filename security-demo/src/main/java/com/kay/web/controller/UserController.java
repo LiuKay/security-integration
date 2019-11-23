@@ -1,5 +1,6 @@
 package com.kay.web.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.kay.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +16,14 @@ import java.util.List;
  * @since 2019/11/23
  */
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 public class UserController {
 
-    @GetMapping("/users")
+    /**
+     * 使用 JsonView 给对象定义不同的视图，隐藏字段等
+     */
+    @GetMapping
+    @JsonView(User.UserSimpleView.class)
     public ResponseEntity list() {
         List<User> userList = new ArrayList<User>();
         userList.add(new User());
@@ -29,7 +34,8 @@ public class UserController {
     }
 
     // id://d+ => id must be number
-    @GetMapping("/users/{id:\\d+}")
+    @GetMapping("/{id:\\d+}")
+    @JsonView(User.UserDetailView.class)
     public ResponseEntity getUser(@PathVariable String id) {
         System.out.println(id);
         User user = new User();
