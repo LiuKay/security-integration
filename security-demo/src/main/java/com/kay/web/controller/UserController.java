@@ -1,6 +1,7 @@
 package com.kay.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.kay.UserNotFoundException;
 import com.kay.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,11 +37,12 @@ public class UserController {
     @GetMapping("/{id:\\d+}")
     @JsonView(User.UserDetailView.class)
     public ResponseEntity getUser(@PathVariable String id) {
-        System.out.println(id);
-        User user = new User();
-        user.setId("1");
-        user.setUsername("user1");
-        return ResponseEntity.ok(user);
+        throw new UserNotFoundException(id);
+//        System.out.println(id);
+//        User user = new User();
+//        user.setId("1");
+//        user.setUsername("user1");
+//        return ResponseEntity.ok(user);
     }
 
     @PostMapping
