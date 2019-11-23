@@ -3,8 +3,10 @@ package com.kay.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kay.entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class UserController {
     @GetMapping
     @JsonView(User.UserSimpleView.class)
     public ResponseEntity list() {
-        List<User> userList = new ArrayList<User>();
+        List<User> userList = new ArrayList<>();
         userList.add(new User());
         userList.add(new User());
         userList.add(new User());
@@ -42,7 +44,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
+    public ResponseEntity<User> create(@Valid @RequestBody User user, BindingResult result) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+        }
         user.setId("1");
         return ResponseEntity.ok(user);
     }

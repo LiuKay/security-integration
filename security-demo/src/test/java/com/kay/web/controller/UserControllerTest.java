@@ -63,7 +63,7 @@ public class UserControllerTest {
 
     @Test
     public void createSuccess() throws Exception {
-        String body = "{\"username\": \"new_user\",\"password\": null}";
+        String body = "{\"username\": null,\"password\": null}";
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))

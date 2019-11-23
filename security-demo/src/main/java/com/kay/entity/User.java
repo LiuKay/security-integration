@@ -1,6 +1,10 @@
 package com.kay.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.kay.validator.MyConstrain;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author LiuKay
@@ -13,8 +17,15 @@ public class User {
 
 
     private String id;
+
+    @NotBlank(message = "username can not be null")
+    @NotNull
     private String username;
+
     private String password;
+
+    @MyConstrain(message = "this is a custom constrain annotation!")
+    private String address;
 
     @JsonView(UserSimpleView.class)
     public String getId() {
