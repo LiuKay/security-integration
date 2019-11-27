@@ -1,4 +1,4 @@
-package com.kay.securiy.demo.service;
+package com.kay.security.demo.service;
 
 /**
  * @author LiuKay

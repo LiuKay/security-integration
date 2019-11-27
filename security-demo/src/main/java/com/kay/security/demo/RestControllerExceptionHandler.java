@@ -1,4 +1,4 @@
-package com.kay.securiy.demo;
+package com.kay.security.demo;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

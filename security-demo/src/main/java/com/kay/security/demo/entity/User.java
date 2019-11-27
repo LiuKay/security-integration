@@ -1,7 +1,7 @@
-package com.kay.securiy.demo.entity;
+package com.kay.security.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.kay.securiy.demo.validator.MyConstrain;
+import com.kay.security.demo.validator.MyConstrain;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

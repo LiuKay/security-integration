@@ -1,4 +1,4 @@
-package com.kay.securiy.demo.web.controller;
+package com.kay.security.demo.web.controller;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,8 +1,8 @@
-package com.kay.securiy.demo.web.controller;
+package com.kay.security.demo.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.kay.securiy.demo.UserNotFoundException;
-import com.kay.securiy.demo.entity.User;
+import com.kay.security.demo.UserNotFoundException;
+import com.kay.security.demo.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

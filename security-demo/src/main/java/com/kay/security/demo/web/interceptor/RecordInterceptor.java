@@ -1,4 +1,4 @@
-package com.kay.securiy.demo.web.interceptor;
+package com.kay.security.demo.web.interceptor;
 
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
