@@ -26,9 +26,20 @@ public class UserController {
     @JsonView(User.UserSimpleView.class)
     public ResponseEntity list() {
         List<User> userList = new ArrayList<>();
-        userList.add(new User());
-        userList.add(new User());
-        userList.add(new User());
+        User user1 = new User();
+        user1.setId("u001");
+        user1.setUsername("Tom");
+        userList.add(user1);
+
+        User user2 = new User();
+        user2.setId("u002");
+        user2.setUsername("Jim");
+        userList.add(user2);
+
+        User user3 = new User();
+        user3.setId("u003");
+        user3.setUsername("Lucy");
+        userList.add(user3);
 
         return ResponseEntity.ok(userList);
     }
