@@ -1,6 +1,5 @@
 package com.kay.web.interceptor;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
  * @author LiuKay
  * @since 2019/11/24
  */
-@Component
+//@Component
 public class RecordInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

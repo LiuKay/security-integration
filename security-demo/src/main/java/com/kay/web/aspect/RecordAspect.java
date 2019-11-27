@@ -4,15 +4,13 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
 
 /**
  * @author LiuKay
  * @since 2019/11/24
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class RecordAspect {
 
     @Around(value = "execution(* com.kay.web.controller.UserController.*(..))")
