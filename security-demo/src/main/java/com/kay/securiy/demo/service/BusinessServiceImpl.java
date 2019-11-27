@@ -1,4 +1,4 @@
-package com.kay.service;
+package com.kay.securiy.demo.service;
 
 import org.springframework.stereotype.Service;
 

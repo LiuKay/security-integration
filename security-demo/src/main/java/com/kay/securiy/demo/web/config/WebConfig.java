@@ -1,7 +1,7 @@
-package com.kay.web.config;
+package com.kay.securiy.demo.web.config;
 
-import com.kay.web.filter.MockThirdPartyFilter;
-import com.kay.web.interceptor.RecordInterceptor;
+import com.kay.securiy.demo.web.filter.MockThirdPartyFilter;
+import com.kay.securiy.demo.web.interceptor.RecordInterceptor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

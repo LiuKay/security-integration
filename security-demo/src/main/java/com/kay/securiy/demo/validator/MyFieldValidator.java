@@ -1,4 +1,4 @@
-package com.kay.validator;
+package com.kay.securiy.demo.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
