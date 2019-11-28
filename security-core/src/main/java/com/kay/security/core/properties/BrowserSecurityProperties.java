@@ -10,6 +10,7 @@ public class BrowserSecurityProperties {
 
     private String loginPage = DEFAULT_LOGIN_PAGE;
 
+    private LoginResponseType loginResponseType = LoginResponseType.JSON;
 
     public String getLoginPage() {
         return loginPage;
@@ -17,5 +18,13 @@ public class BrowserSecurityProperties {
 
     public void setLoginPage(String loginPage) {
         this.loginPage = loginPage;
+    }
+
+    public LoginResponseType getLoginResponseType() {
+        return loginResponseType;
+    }
+
+    public void setLoginResponseType(LoginResponseType loginResponseType) {
+        this.loginResponseType = loginResponseType;
     }
 }
