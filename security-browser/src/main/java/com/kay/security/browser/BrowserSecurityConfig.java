@@ -22,14 +22,16 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
-                .loginPage("/authentication/require")
-                .loginProcessingUrl("/authentication/form")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/authentication/require",
-                        securityProperties.getBrowser().getLoginPage()).permitAll()
-                .anyRequest()
-                .authenticated();
+            .loginPage("/authentication/require")
+            .loginProcessingUrl("/authentication/form")
+            .and()
+            .authorizeRequests()
+            .antMatchers(securityProperties.getBrowser().getLoginPage()).permitAll()
+            .antMatchers("/authentication/require").permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .csrf().disable();
     }
 
     @Bean
