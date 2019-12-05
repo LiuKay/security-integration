@@ -34,11 +34,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         ValidationCodeAuthenticationFilter codeAuthenticationFilter = new ValidationCodeAuthenticationFilter(failureHandler);
-        http.addFilterBefore(codeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.
+        http.addFilterBefore(codeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).
                 formLogin()
                 .loginPage(AUTHENTICATION_URL)
                 .loginProcessingUrl(LOGIN_PROCESSING_URL)
