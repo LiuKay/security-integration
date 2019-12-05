@@ -1,6 +1,7 @@
 package com.kay.security.browser;
 
 import com.kay.security.core.properties.SecurityProperties;
+import com.kay.security.core.validationcode.ValidationCodeAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author LiuKay
@@ -32,15 +34,21 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
+
+        ValidationCodeAuthenticationFilter codeAuthenticationFilter = new ValidationCodeAuthenticationFilter(failureHandler);
+        http.addFilterBefore(codeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.
+                formLogin()
                 .loginPage(AUTHENTICATION_URL)
                 .loginProcessingUrl(LOGIN_PROCESSING_URL)
                 .successHandler(successHandler)
                 .failureHandler(failureHandler)
             .and()
             .authorizeRequests()
-            .antMatchers(securityProperties.getBrowser().getLoginPage()).permitAll()
-                .antMatchers(AUTHENTICATION_URL).permitAll()
+                .antMatchers(securityProperties.getBrowser().getLoginPage(),
+                        AUTHENTICATION_URL,
+                        "/code/image").permitAll()
             .anyRequest()
             .authenticated()
             .and()
