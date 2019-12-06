@@ -3,7 +3,6 @@ package com.kay.security.demo.code;
 import com.kay.security.core.validationcode.ImageCode;
 import com.kay.security.core.validationcode.VerificationCodeGenerator;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author LiuKay
  * @since 2019/12/6
  */
-@Component("imageCodeGenerator")
+//@Component("imageCodeGenerator")
 @Log4j2
 public class MyImageCodeGenerator implements VerificationCodeGenerator {
 
