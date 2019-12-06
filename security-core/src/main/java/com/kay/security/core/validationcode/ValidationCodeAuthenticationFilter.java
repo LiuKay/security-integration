@@ -35,8 +35,9 @@ public class ValidationCodeAuthenticationFilter extends OncePerRequestFilter {
             try {
                 checkValidationCode(new ServletWebRequest(request));
             } catch (ValidateCodeException e) {
-                log.info("login failed in va,idation code.");
+                log.info("login failed in validation code.");
                 failureHandler.onAuthenticationFailure(request, response, e);
+                return;
             }
         }
 

@@ -39,6 +39,7 @@ public class BrowserAuthenticationFailureHandler extends SimpleUrlAuthentication
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType(MediaType.APPLICATION_JSON.toString());
             //TODO convert to JSON format
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(exception.getMessage()));
 
         } else {
