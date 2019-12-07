@@ -44,9 +44,12 @@ public class VerificationCodeAuthenticationFilter extends OncePerRequestFilter i
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
-        String[] strings = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getValidation().getImage().getUrl(), ",");
-        for (String url : strings) {
-            urls.add(url);
+        String configUrls = securityProperties.getValidation().getImage().getUrl();
+        if (StringUtils.isNoneBlank(configUrls)) {
+            String[] strings = StringUtils.splitByWholeSeparatorPreserveAllTokens(configUrls, ",");
+            for (String url : strings) {
+                urls.add(url);
+            }
         }
 
         urls.add(FORM_LOGIN_URL);

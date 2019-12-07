@@ -12,6 +12,8 @@ public class BrowserSecurityProperties {
 
     private LoginResponseType loginResponseType = LoginResponseType.JSON;
 
+    private int rememberTime = 3600;
+
     public String getLoginPage() {
         return loginPage;
     }
@@ -26,5 +28,13 @@ public class BrowserSecurityProperties {
 
     public void setLoginResponseType(LoginResponseType loginResponseType) {
         this.loginResponseType = loginResponseType;
+    }
+
+    public int getRememberTime() {
+        return rememberTime;
+    }
+
+    public void setRememberTime(int rememberTime) {
+        this.rememberTime = rememberTime;
     }
 }

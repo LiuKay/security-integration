@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @author LiuKay
  * @since 2019/11/27
  */
-@Component
+@Component("myUserDetailsService")
 @Log4j2
 public class MyUserDetailsService implements UserDetailsService {
 
