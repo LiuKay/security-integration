@@ -1,7 +1,7 @@
 package com.kay.security.browser;
 
 import com.kay.security.core.properties.SecurityProperties;
-import com.kay.security.core.validationcode.ValidationCodeAuthenticationFilter;
+import com.kay.security.core.validationcode.VerificationCodeAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +34,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        ValidationCodeAuthenticationFilter codeAuthenticationFilter = new ValidationCodeAuthenticationFilter(failureHandler);
+        VerificationCodeAuthenticationFilter codeAuthenticationFilter = new VerificationCodeAuthenticationFilter(failureHandler);
         codeAuthenticationFilter.setSecurityProperties(securityProperties);
         // TODO: don't forget this. ValidationCodeAuthenticationFilter currently is not a Spring bean
         codeAuthenticationFilter.afterPropertiesSet();

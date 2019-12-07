@@ -24,7 +24,7 @@ import java.util.Set;
  * @since 2019/12/5
  */
 @Log4j2
-public class ValidationCodeAuthenticationFilter extends OncePerRequestFilter implements InitializingBean {
+public class VerificationCodeAuthenticationFilter extends OncePerRequestFilter implements InitializingBean {
 
     private static final String FORM_LOGIN_URL = "/authentication/form";
     private static final String VERIFICATION_CODE_PARAMETER = "imageCode";
@@ -64,7 +64,7 @@ public class ValidationCodeAuthenticationFilter extends OncePerRequestFilter imp
         if (action) {
             try {
                 checkValidationCode(new ServletWebRequest(request));
-            } catch (ValidateCodeException e) {
+            } catch (VerificationCodeException e) {
                 log.info("login failed in validation code.");
                 failureHandler.onAuthenticationFailure(request, response, e);
                 return;
@@ -75,28 +75,28 @@ public class ValidationCodeAuthenticationFilter extends OncePerRequestFilter imp
 
 
     private void checkValidationCode(ServletWebRequest request) {
-        ImageCode imageCode = (ImageCode) sessionStrategy.getAttribute(request, ValidationCodeController.VALIDATION_CODE_IN_SESSION);
+        ImageCode imageCode = (ImageCode) sessionStrategy.getAttribute(request, VerificationCodeController.VALIDATION_CODE_IN_SESSION);
         String codeInRequest = request.getParameter(VERIFICATION_CODE_PARAMETER);
         if (StringUtils.isBlank(codeInRequest)) {
-            throw new ValidateCodeException("验证码的值不能为空");
+            throw new VerificationCodeException("验证码的值不能为空");
         }
 
         if (imageCode.getCode() == null) {
-            throw new ValidateCodeException("验证码不存在");
+            throw new VerificationCodeException("验证码不存在");
         }
 
         if (imageCode.isExpired()) {
-            throw new ValidateCodeException("验证码已过期");
+            throw new VerificationCodeException("验证码已过期");
         }
 
         if (!StringUtils.equalsAnyIgnoreCase(codeInRequest, imageCode.getCode())) {
-            throw new ValidateCodeException("验证码不匹配");
+            throw new VerificationCodeException("验证码不匹配");
         }
 
-        sessionStrategy.removeAttribute(request, ValidationCodeController.VALIDATION_CODE_IN_SESSION);
+        sessionStrategy.removeAttribute(request, VerificationCodeController.VALIDATION_CODE_IN_SESSION);
     }
 
-    public ValidationCodeAuthenticationFilter(AuthenticationFailureHandler failureHandler) {
+    public VerificationCodeAuthenticationFilter(AuthenticationFailureHandler failureHandler) {
         this.failureHandler = failureHandler;
     }
 

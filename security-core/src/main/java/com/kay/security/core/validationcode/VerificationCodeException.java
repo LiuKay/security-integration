@@ -6,13 +6,13 @@ import org.springframework.security.core.AuthenticationException;
  * @author LiuKay
  * @since 2019/12/5
  */
-class ValidateCodeException extends AuthenticationException {
+class VerificationCodeException extends AuthenticationException {
 
-    public ValidateCodeException(String msg, Throwable t) {
+    public VerificationCodeException(String msg, Throwable t) {
         super(msg, t);
     }
 
-    public ValidateCodeException(String msg) {
+    public VerificationCodeException(String msg) {
         super(msg);
     }
 }

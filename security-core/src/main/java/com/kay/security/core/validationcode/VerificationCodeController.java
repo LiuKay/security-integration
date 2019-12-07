@@ -17,7 +17,7 @@ import java.io.IOException;
  * @since 2019/12/5
  */
 @RestController
-public class ValidationCodeController {
+public class VerificationCodeController {
 
     SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
