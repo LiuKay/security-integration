@@ -1,28 +1,24 @@
 package com.kay.security.core.validationcode;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 /**
  * @author LiuKay
- * @since 2019/12/5
+ * @since 2019/12/7
  */
-public class ImageCode {
+public class VerificationCode {
 
-    private BufferedImage image;
     private String code;
     private LocalDateTime expiredTime;
 
-    public ImageCode(BufferedImage image, String code, int expiredSeconds) {
-        this.image = image;
+    public VerificationCode(String code, int expiredSeconds) {
         this.code = code;
         this.expiredTime = LocalDateTime.now().plusSeconds(expiredSeconds);
     }
 
-    boolean isExpired() {
+    public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiredTime);
     }
-
 
     public String getCode() {
         return code;
@@ -32,11 +28,11 @@ public class ImageCode {
         this.code = code;
     }
 
-    public BufferedImage getImage() {
-        return image;
+    public LocalDateTime getExpiredTime() {
+        return expiredTime;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
+    public void setExpiredTime(LocalDateTime expiredTime) {
+        this.expiredTime = expiredTime;
     }
 }

@@ -1,12 +1,10 @@
 package com.kay.security.core.validationcode;
 
 import com.kay.security.core.properties.SecurityProperties;
-import lombok.extern.log4j.Log4j2;
+import com.kay.security.core.properties.VerificationCodeProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.social.connect.web.HttpSessionSessionStrategy;
-import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,59 +14,65 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
+ * This filter is to validate the code verification code in the request and session
  * @author LiuKay
  * @since 2019/12/5
  */
-@Log4j2
 public class VerificationCodeAuthenticationFilter extends OncePerRequestFilter implements InitializingBean {
 
     private static final String FORM_LOGIN_URL = "/authentication/form";
-    private static final String VERIFICATION_CODE_PARAMETER = "imageCode";
 
     private AuthenticationFailureHandler failureHandler;
 
-    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+    private VerificationCodeProcessorHolder processorHolder;
 
     private SecurityProperties securityProperties;
 
-    private Set<String> urls = new HashSet<>();
+    private Map<String, ValidationCodeType> urlMap = new HashMap<>();
 
     // for url match
     private AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    // this is for securityProperties is filled in.
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
-        String configUrls = securityProperties.getValidation().getImage().getUrl();
-        if (StringUtils.isNoneBlank(configUrls)) {
-            String[] strings = StringUtils.splitByWholeSeparatorPreserveAllTokens(configUrls, ",");
+
+        urlMap.put(FORM_LOGIN_URL, ValidationCodeType.IMAGE);
+
+        VerificationCodeProperties validation = securityProperties.getValidation();
+        addUrl(validation.getImage().getUrl(), ValidationCodeType.IMAGE);
+        addUrl(validation.getSms().getUrl(), ValidationCodeType.SMS);
+    }
+
+    /**
+     * add the urls in properties file for each validation type
+     *
+     * @param urlConfig
+     * @param type
+     */
+    protected void addUrl(String urlConfig, ValidationCodeType type) {
+        if (StringUtils.isNoneBlank(urlConfig)) {
+            String[] strings = StringUtils.splitByWholeSeparatorPreserveAllTokens(urlConfig, ",");
             for (String url : strings) {
-                urls.add(url);
+                urlMap.put(url, type);
             }
         }
-
-        urls.add(FORM_LOGIN_URL);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        boolean action = false;
-        for (String url : urls) {
-            if (pathMatcher.match(url, request.getRequestURI())) {
-                action = true;
-            }
-        }
-
-        if (action) {
+        ValidationCodeType type = getValidationCodeType(request);
+        if (null != type) {
             try {
-                checkValidationCode(new ServletWebRequest(request));
+                logger.info("Validate Code. Request \"" + request.getRequestURI() + "\" - Type: " + type);
+                processorHolder.findProcessor(type).validate(new ServletWebRequest(request, response));
+                logger.info("Validate Code SUCCESS.");
             } catch (VerificationCodeException e) {
-                log.info("login failed in validation code.");
                 failureHandler.onAuthenticationFailure(request, response, e);
                 return;
             }
@@ -76,34 +80,28 @@ public class VerificationCodeAuthenticationFilter extends OncePerRequestFilter i
         filterChain.doFilter(request, response);
     }
 
-
-    private void checkValidationCode(ServletWebRequest request) {
-        ImageCode imageCode = (ImageCode) sessionStrategy.getAttribute(request, VerificationCodeController.VALIDATION_CODE_IN_SESSION);
-        String codeInRequest = request.getParameter(VERIFICATION_CODE_PARAMETER);
-        if (StringUtils.isBlank(codeInRequest)) {
-            throw new VerificationCodeException("验证码的值不能为空");
+    private ValidationCodeType getValidationCodeType(HttpServletRequest request) {
+        ValidationCodeType result = null;
+        if (!StringUtils.equalsIgnoreCase(request.getMethod(), "get")) {
+            Set<String> urls = urlMap.keySet();
+            for (String url : urls) {
+                if (pathMatcher.match(url, request.getRequestURI())) {
+                    result = urlMap.get(url);
+                }
+            }
         }
-
-        if (imageCode.getCode() == null) {
-            throw new VerificationCodeException("验证码不存在");
-        }
-
-        if (imageCode.isExpired()) {
-            throw new VerificationCodeException("验证码已过期");
-        }
-
-        if (!StringUtils.equalsAnyIgnoreCase(codeInRequest, imageCode.getCode())) {
-            throw new VerificationCodeException("验证码不匹配");
-        }
-
-        sessionStrategy.removeAttribute(request, VerificationCodeController.VALIDATION_CODE_IN_SESSION);
-    }
-
-    public VerificationCodeAuthenticationFilter(AuthenticationFailureHandler failureHandler) {
-        this.failureHandler = failureHandler;
+        return result;
     }
 
     public void setSecurityProperties(SecurityProperties securityProperties) {
         this.securityProperties = securityProperties;
+    }
+
+    public void setFailureHandler(AuthenticationFailureHandler failureHandler) {
+        this.failureHandler = failureHandler;
+    }
+
+    public void setProcessorHolder(VerificationCodeProcessorHolder processorHolder) {
+        this.processorHolder = processorHolder;
     }
 }

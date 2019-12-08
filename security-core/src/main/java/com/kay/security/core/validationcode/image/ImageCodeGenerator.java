@@ -1,9 +1,11 @@
-package com.kay.security.core.validationcode;
+package com.kay.security.core.validationcode.image;
 
 import com.kay.security.core.properties.SecurityProperties;
+import com.kay.security.core.validationcode.VerificationCode;
+import com.kay.security.core.validationcode.VerificationCodeGenerator;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -15,15 +17,19 @@ import java.util.Random;
  * @author LiuKay
  * @since 2019/12/6
  */
-public class DefaultVerificationCodeGenerator implements VerificationCodeGenerator {
+public class ImageCodeGenerator implements VerificationCodeGenerator {
 
-    private SecurityProperties properties;
+    private final SecurityProperties properties;
+
+    public ImageCodeGenerator(SecurityProperties properties) {
+        this.properties = properties;
+    }
 
     @Override
-    public ImageCode generate(HttpServletRequest request) {
-        int width = ServletRequestUtils.getIntParameter(request, "width",
+    public VerificationCode generate(ServletWebRequest request) {
+        int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width",
                 properties.getValidation().getImage().getWidth());
-        int height = ServletRequestUtils.getIntParameter(request, "height",
+        int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height",
                 properties.getValidation().getImage().getHeight());
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
@@ -70,11 +76,4 @@ public class DefaultVerificationCodeGenerator implements VerificationCodeGenerat
         return new Color(r, g, b);
     }
 
-    public SecurityProperties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(SecurityProperties properties) {
-        this.properties = properties;
-    }
 }
