@@ -1,5 +1,6 @@
 package com.kay.security.browser;
 
+import com.kay.security.core.authentication.mobile.SmsCodeSecurityConfiguration;
 import com.kay.security.core.properties.SecurityProperties;
 import com.kay.security.core.validationcode.VerificationCodeAuthenticationFilter;
 import com.kay.security.core.validationcode.VerificationCodeProcessorHolder;
@@ -49,6 +50,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private VerificationCodeProcessorHolder verificationCodeProcessorHolder;
 
+    @Autowired
+    private SmsCodeSecurityConfiguration smsCodeSecurityConfiguration;
+
     @Bean
     PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
@@ -82,11 +86,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers(securityProperties.getBrowser().getLoginPage(),
                         AUTHENTICATION_URL,
-                        "/code/image").permitAll()
+                        "/code/*").permitAll()
             .anyRequest()
             .authenticated()
             .and()
             .csrf().disable();
+
+        http.apply(smsCodeSecurityConfiguration);
     }
 
     @Bean
