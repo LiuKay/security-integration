@@ -1,10 +1,13 @@
 package com.kay.security.core.validationcode;
 
+import com.kay.security.core.properties.SecurityConstants;
 import com.kay.security.core.properties.SecurityProperties;
 import com.kay.security.core.properties.VerificationCodeProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,14 +26,19 @@ import java.util.Set;
  * @author LiuKay
  * @since 2019/12/5
  */
+@Component("verificationCodeFilter")
 public class VerificationCodeAuthenticationFilter extends OncePerRequestFilter implements InitializingBean {
 
-    private static final String FORM_LOGIN_URL = "/authentication/form";
+    private static final String FORM_LOGIN_URL = SecurityConstants.LOGIN_FORM_PROCESSING_URL;
+    private static final String MOBILE_LOGIN_URL = SecurityConstants.LOGIN_MOBILE_PROCESSING_URL;
 
+    @Autowired
     private AuthenticationFailureHandler failureHandler;
 
+    @Autowired
     private VerificationCodeProcessorHolder processorHolder;
 
+    @Autowired
     private SecurityProperties securityProperties;
 
     private Map<String, ValidationCodeType> urlMap = new HashMap<>();
@@ -43,6 +51,7 @@ public class VerificationCodeAuthenticationFilter extends OncePerRequestFilter i
         super.afterPropertiesSet();
 
         urlMap.put(FORM_LOGIN_URL, ValidationCodeType.IMAGE);
+        urlMap.put(MOBILE_LOGIN_URL, ValidationCodeType.SMS);
 
         VerificationCodeProperties validation = securityProperties.getValidation();
         addUrl(validation.getImage().getUrl(), ValidationCodeType.IMAGE);
@@ -93,15 +102,4 @@ public class VerificationCodeAuthenticationFilter extends OncePerRequestFilter i
         return result;
     }
 
-    public void setSecurityProperties(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
-    }
-
-    public void setFailureHandler(AuthenticationFailureHandler failureHandler) {
-        this.failureHandler = failureHandler;
-    }
-
-    public void setProcessorHolder(VerificationCodeProcessorHolder processorHolder) {
-        this.processorHolder = processorHolder;
-    }
 }

@@ -1,9 +1,6 @@
 package com.kay.security.core.authentication.mobile;
 
-import com.kay.security.core.validationcode.sms.SmsCodeAuthenticationFilter;
-import com.kay.security.core.validationcode.sms.SmsCodeAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +25,6 @@ public class SmsCodeSecurityConfiguration extends SecurityConfigurerAdapter<Defa
     private AuthenticationFailureHandler failureHandler;
 
     @Autowired
-    @Qualifier("myUserDetailsService")
     private UserDetailsService userDetailsService;
 
     @Override

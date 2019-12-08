@@ -6,9 +6,7 @@ package com.kay.security.core.properties;
  */
 public class BrowserSecurityProperties {
 
-    private static final String DEFAULT_LOGIN_PAGE = "/default_login.html";
-
-    private String loginPage = DEFAULT_LOGIN_PAGE;
+    private String loginPage = SecurityConstants.LOGIN_FORM_PAGE;
 
     private LoginResponseType loginResponseType = LoginResponseType.JSON;
 

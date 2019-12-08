@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2019/12/6
  */
 @Configuration
-public class VerificationConfiguration {
+public class VerificationBeanConfiguration {
 
     @Autowired
     private SecurityProperties securityProperties;

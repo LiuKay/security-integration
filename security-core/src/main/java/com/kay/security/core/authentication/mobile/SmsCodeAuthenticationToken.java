@@ -1,4 +1,4 @@
-package com.kay.security.core.validationcode.sms;
+package com.kay.security.core.authentication.mobile;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

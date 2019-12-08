@@ -2,6 +2,7 @@ package com.kay.security.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kay.security.demo.validator.MyConstrain;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
  * @author LiuKay
  * @since 2019/11/23
  */
+@ToString
 public class User {
 
     public interface UserSimpleView{}

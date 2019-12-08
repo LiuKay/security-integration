@@ -1,5 +1,6 @@
-package com.kay.security.core.validationcode.sms;
+package com.kay.security.core.authentication.mobile;
 
+import com.kay.security.core.properties.SecurityConstants;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -17,13 +18,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    public static final String INTEGRATION_MOBILE = "mobile";
+    private String mobileParameter = SecurityConstants.REQUEST_PARAMETER_MOBILE;
 
-    private String mobileParameter = INTEGRATION_MOBILE;
     private boolean postOnly = true;
 
     public SmsCodeAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/authentication/mobile", "POST"));
+        super(new AntPathRequestMatcher(SecurityConstants.LOGIN_MOBILE_PROCESSING_URL, "POST"));
     }
 
     public Authentication attemptAuthentication(HttpServletRequest request,

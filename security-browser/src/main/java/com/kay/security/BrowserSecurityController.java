@@ -1,5 +1,6 @@
-package com.kay.security.browser;
+package com.kay.security;
 
+import com.kay.security.core.properties.SecurityConstants;
 import com.kay.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class BrowserSecurityController {
     /**
      * check the request url is browser request(return Web Page) or REST request(return REST JSON)
      */
-    @GetMapping("/authentication/require")
+    @GetMapping(SecurityConstants.AUTHENTICATION_URL)
     public ResponseEntity requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);

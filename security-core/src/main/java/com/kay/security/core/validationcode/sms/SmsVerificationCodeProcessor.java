@@ -1,5 +1,6 @@
 package com.kay.security.core.validationcode.sms;
 
+import com.kay.security.core.properties.SecurityConstants;
 import com.kay.security.core.validationcode.AbstractVerificationCodeProcessor;
 import com.kay.security.core.validationcode.VerificationCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Component("smsVerificationCodeProcessor")
 public class SmsVerificationCodeProcessor extends AbstractVerificationCodeProcessor<VerificationCode> {
 
-    private static final String DEFAULT_PARAMETER_NAME_MOBILE = "mobile";
+    private static final String DEFAULT_PARAMETER_NAME_MOBILE = SecurityConstants.REQUEST_PARAMETER_MOBILE;
 
     private final SmsCodeSender smsCodeSender;
 
